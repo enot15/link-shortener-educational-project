@@ -13,15 +13,23 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CreateLinkInfoRequest {
 
-    /** Полная ссылка */
+    /**
+     * Полная ссылка
+     */
     private String link;
 
-    /** Время истеченияя жизни короткой ссылки */
+    /**
+     * Время истеченияя жизни короткой ссылки
+     */
     private LocalDateTime endTime;
 
-    /** Описание */
+    /**
+     * Описание
+     */
     private String description;
 
-    /** Признак активности ссылки */
+    /**
+     * Признак активности ссылки
+     */
     private Boolean active;
 }
