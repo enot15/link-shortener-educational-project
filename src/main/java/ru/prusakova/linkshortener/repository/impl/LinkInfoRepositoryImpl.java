@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class LinkInfoRepositoryImpl implements LinkInfoRepository {
 
-    public ConcurrentHashMap<String, LinkInfo> links = new ConcurrentHashMap<>();
+    public ConcurrentMap<String, LinkInfo> links = new ConcurrentHashMap<>();
 
     @Override
     public Optional<LinkInfo> findByShortLink(String shortLink) {

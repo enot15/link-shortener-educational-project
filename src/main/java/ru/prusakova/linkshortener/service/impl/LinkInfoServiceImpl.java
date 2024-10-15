@@ -24,7 +24,7 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     }
 
     public LinkInfoResponse createLinkInfo(CreateLinkInfoRequest request) {
-        String shortLink = "http://test.com/" + RandomStringUtils.randomAlphabetic(LENGTH_SHORT_LINK);
+        String shortLink = RandomStringUtils.randomAlphabetic(LENGTH_SHORT_LINK);
         LinkInfo linkInfo = LinkInfo.builder()
                 .link(request.getLink())
                 .shortLink(shortLink)
