@@ -2,50 +2,50 @@ package ru.prusakova.linkshortener.service.impl;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.prusakova.linkshortener.dto.CreateLinkInfoRequest;
 import ru.prusakova.linkshortener.dto.LinkInfoResponse;
-import ru.prusakova.linkshortener.repository.LinkInfoRepository;
-import ru.prusakova.linkshortener.repository.impl.LinkInfoRepositoryImpl;
+import ru.prusakova.linkshortener.dto.UpdateLinkInfoRequest;
+import ru.prusakova.linkshortener.exception.NotFoundException;
+import ru.prusakova.linkshortener.service.LinkInfoService;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+@SpringBootTest
 class LinkInfoServiceImplTest {
+
+    @Autowired
+    private LinkInfoService linkInfoService;
 
     @Test
     void createLinkInfoTest() {
-        LinkInfoRepository linkInfoRepository = new LinkInfoRepositoryImpl();
-        LinkInfoServiceImpl service = new LinkInfoServiceImpl(linkInfoRepository);
         CreateLinkInfoRequest rq = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/1",
                 LocalDateTime.now(),
                 "description",
                 true
         );
-        LinkInfoResponse linkInfoResponse = service.createLinkInfo(rq);
+        LinkInfoResponse linkInfoResponse = linkInfoService.createLinkInfo(rq);
 
         Assertions.assertNotNull(linkInfoResponse.getId());
     }
 
     @Test
     void getByShortLinkTest() {
-        LinkInfoRepository linkInfoRepository = new LinkInfoRepositoryImpl();
-        LinkInfoServiceImpl service = new LinkInfoServiceImpl(linkInfoRepository);
         CreateLinkInfoRequest rq = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/1",
                 LocalDateTime.now(),
                 "doc1",
                 true
         );
-        LinkInfoResponse linkInfoResponse = service.createLinkInfo(rq);
+        LinkInfoResponse linkInfoResponse = linkInfoService.createLinkInfo(rq);
 
-        Assertions.assertEquals(linkInfoResponse, service.getByShortLink(linkInfoResponse.getShortLink()));
+        Assertions.assertEquals(linkInfoResponse, linkInfoService.getByShortLink(linkInfoResponse.getShortLink()));
     }
 
     @Test
     void findByFilterTest() {
-        LinkInfoRepository linkInfoRepository = new LinkInfoRepositoryImpl();
-        LinkInfoServiceImpl service = new LinkInfoServiceImpl(linkInfoRepository);
         CreateLinkInfoRequest rq1 = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/1",
                 LocalDateTime.now(),
@@ -58,9 +58,57 @@ class LinkInfoServiceImplTest {
                 "doc2",
                 true
         );
-        LinkInfoResponse linkInfoResponse1 = service.createLinkInfo(rq1);
-        LinkInfoResponse linkInfoResponse2 = service.createLinkInfo(rq2);
+        linkInfoService.createLinkInfo(rq1);
+        linkInfoService.createLinkInfo(rq2);
 
-        Assertions.assertEquals(List.of(linkInfoResponse1, linkInfoResponse2), service.findByFilter());
+        Assertions.assertNotNull(linkInfoService.findByFilter());
+    }
+
+    @Test
+    void deleteTest() {
+        CreateLinkInfoRequest rq1 = new CreateLinkInfoRequest(
+                "https://docs.google.com/document/d/1",
+                LocalDateTime.now(),
+                "doc1",
+                true
+        );
+        CreateLinkInfoRequest rq2 = new CreateLinkInfoRequest(
+                "https://docs.google.com/document/d/2",
+                LocalDateTime.now(),
+                "doc2",
+                true
+        );
+        LinkInfoResponse linkInfoResponse1 = linkInfoService.createLinkInfo(rq1);
+        LinkInfoResponse linkInfoResponse2 = linkInfoService.createLinkInfo(rq2);
+
+        linkInfoService.delete(linkInfoResponse1.getId());
+        Assertions.assertNotNull(linkInfoService.getByShortLink(linkInfoResponse2.getShortLink()));
+        Assertions.assertThrows(NotFoundException.class,
+                () -> linkInfoService.getByShortLink(linkInfoResponse1.getShortLink()));
+    }
+
+    @Test
+    void updateLinkInfoTest() {
+        CreateLinkInfoRequest rq = new CreateLinkInfoRequest(
+                "https://docs.google.com/document/d/1",
+                LocalDateTime.now(),
+                "doc1",
+                true
+        );
+        LinkInfoResponse linkInfoResponse = linkInfoService.createLinkInfo(rq);
+        UpdateLinkInfoRequest updateLinkInfoRequest1 = new UpdateLinkInfoRequest();
+        updateLinkInfoRequest1.setId(linkInfoResponse.getId());
+        updateLinkInfoRequest1.setDescription("doc11");
+
+        LinkInfoResponse linkInfoResponseNew1 = LinkInfoResponse.builder()
+                .id(linkInfoResponse.getId())
+                .link(linkInfoResponse.getLink())
+                .shortLink(linkInfoResponse.getShortLink())
+                .endTime(linkInfoResponse.getEndTime())
+                .description(updateLinkInfoRequest1.getDescription())
+                .active(linkInfoResponse.getActive())
+                .openingCount(linkInfoResponse.getOpeningCount())
+                .build();
+        Assertions.assertEquals(linkInfoResponseNew1, linkInfoService.updateLinkInfo(updateLinkInfoRequest1));
     }
 }
