@@ -24,13 +24,15 @@ public class LinkInfoRepositoryImpl implements LinkInfoRepository {
     @Override
     public Optional<LinkInfo> findById(UUID id) {
         return findAll().stream()
-                .filter(it -> it.getId() == id)
+                .filter(it -> it.getId().equals(id))
                 .findFirst();
     }
 
     @Override
     public LinkInfo save(LinkInfo linkInfo) {
-        linkInfo.setId(UUID.randomUUID());
+        if (linkInfo.getId() == null) {
+            linkInfo.setId(UUID.randomUUID());
+        }
         links.put(linkInfo.getShortLink(), linkInfo);
         return linkInfo;
     }
@@ -42,32 +44,7 @@ public class LinkInfoRepositoryImpl implements LinkInfoRepository {
 
     @Override
     public void delete(UUID id) {
-        Optional<LinkInfo> linkInfo = findById(id);
-        if (linkInfo.isPresent()) {
-            if (links.get(linkInfo.get().getShortLink()) != null) {
-                links.remove(linkInfo.get().getShortLink());
-            }
-        }
-    }
-
-    @Override
-    public Optional<LinkInfo> updateLinkInfo(LinkInfo linkInfo) {
-        Optional<LinkInfo> oldLinkInfo = findById(linkInfo.getId());
-        if (oldLinkInfo.isPresent()) {
-            if (linkInfo.getLink() != null) {
-                oldLinkInfo.get().setLink(linkInfo.getLink());
-            }
-            if (linkInfo.getEndTime() != null) {
-                oldLinkInfo.get().setEndTime(linkInfo.getEndTime());
-            }
-            if (linkInfo.getDescription() != null) {
-                oldLinkInfo.get().setDescription(linkInfo.getDescription());
-            }
-            if (linkInfo.getActive() != null) {
-                oldLinkInfo.get().setDescription(linkInfo.getDescription());
-            }
-            return oldLinkInfo;
-        }
-        return Optional.empty();
+        findById(id)
+                .ifPresent(it -> links.remove(it.getShortLink()));
     }
 }

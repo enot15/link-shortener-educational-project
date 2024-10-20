@@ -17,7 +17,4 @@ public interface LinkInfoRepository {
     List<LinkInfo> findAll();
 
     void delete(UUID id);
-
-    Optional<LinkInfo> updateLinkInfo(LinkInfo linkInfo);
-
 }

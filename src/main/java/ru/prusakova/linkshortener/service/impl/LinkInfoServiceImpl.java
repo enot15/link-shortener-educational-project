@@ -58,10 +58,24 @@ public class LinkInfoServiceImpl implements LinkInfoService {
 
     @Override
     public LinkInfoResponse updateLinkInfo(UpdateLinkInfoRequest request) {
-        LinkInfo linkInfo = updateToModel(request);
-        return linkInfoRepository.updateLinkInfo(linkInfo)
-                .map(this::toResponse)
+        LinkInfo linkInfo = linkInfoRepository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("Не найдена сущность по id " + request.getId()));
+
+        if (request.getLink() != null) {
+            linkInfo.setLink(request.getLink());
+        }
+        if (request.getEndTime() != null) {
+            linkInfo.setEndTime(request.getEndTime());
+        }
+        if (request.getDescription() != null) {
+            linkInfo.setDescription(request.getDescription());
+        }
+        if (request.getActive() != null) {
+            linkInfo.setDescription(request.getDescription());
+        }
+
+        linkInfoRepository.save(linkInfo);
+        return toResponse(linkInfo);
     }
 
     private LinkInfoResponse toResponse(LinkInfo linkInfo) {
@@ -73,16 +87,6 @@ public class LinkInfoServiceImpl implements LinkInfoService {
                 .description(linkInfo.getDescription())
                 .active(linkInfo.getActive())
                 .openingCount(linkInfo.getOpeningCount())
-                .build();
-    }
-
-    private LinkInfo updateToModel(UpdateLinkInfoRequest request) {
-        return LinkInfo.builder()
-                .id(request.getId())
-                .link(request.getLink())
-                .endTime(request.getEndTime())
-                .description(request.getDescription())
-                .active(request.getActive())
                 .build();
     }
 }
