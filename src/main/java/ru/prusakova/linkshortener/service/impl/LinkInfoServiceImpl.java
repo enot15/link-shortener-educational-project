@@ -3,6 +3,7 @@ package ru.prusakova.linkshortener.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
+import ru.prusakova.linkshortener.annotation.LogExecutionTime;
 import ru.prusakova.linkshortener.dto.CreateLinkInfoRequest;
 import ru.prusakova.linkshortener.dto.LinkInfoResponse;
 import ru.prusakova.linkshortener.dto.UpdateLinkInfoRequest;
@@ -23,6 +24,8 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     private final LinkInfoRepository linkInfoRepository;
     private final LinkInfoProperty linkInfoProperty;
 
+    @Override
+    @LogExecutionTime
     public LinkInfoResponse createLinkInfo(CreateLinkInfoRequest request) {
         String shortLink = RandomStringUtils.randomAlphabetic(linkInfoProperty.getShortLinkLength());
         LinkInfo linkInfo = LinkInfo.builder()
@@ -38,6 +41,7 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     }
 
     @Override
+    @LogExecutionTime
     public LinkInfoResponse getByShortLink(String shortLink) {
         return linkInfoRepository.findByShortLink(shortLink)
                 .map(this::toResponse)
@@ -45,6 +49,7 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     }
 
     @Override
+    @LogExecutionTime
     public List<LinkInfoResponse> findByFilter() {
         return linkInfoRepository.findAll().stream()
                 .map(this::toResponse)
@@ -52,11 +57,13 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     }
 
     @Override
+    @LogExecutionTime
     public void delete(UUID id) {
         linkInfoRepository.delete(id);
     }
 
     @Override
+    @LogExecutionTime
     public LinkInfoResponse updateLinkInfo(UpdateLinkInfoRequest request) {
         LinkInfo linkInfo = linkInfoRepository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("Не найдена сущность по id " + request.getId()));
