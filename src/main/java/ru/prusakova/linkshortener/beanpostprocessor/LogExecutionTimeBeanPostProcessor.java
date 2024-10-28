@@ -25,6 +25,7 @@ public class LogExecutionTimeBeanPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         Method[] methods = bean.getClass().getMethods();
+
         for (Method method : methods) {
             boolean isAnnotated = method.isAnnotationPresent(LogExecutionTime.class);
             if (isAnnotated) {
@@ -32,18 +33,21 @@ public class LogExecutionTimeBeanPostProcessor implements BeanPostProcessor {
                 beanMethodsDataByBeanName.get(beanName).annotatedMethods().add(method);
             }
         }
+
         return BeanPostProcessor.super.postProcessBeforeInitialization(bean, beanName);
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         BeanMethodsData beanMethodsData = beanMethodsDataByBeanName.get(beanName);
+
         if (beanMethodsData == null) {
             return BeanPostProcessor.super.postProcessAfterInitialization(bean, beanName);
         }
 
         Class<?> beanClass = beanMethodsData.clazz();
         List<Method> annotatedMethods = beanMethodsData.annotatedMethods();
+
         return Proxy.newProxyInstance(beanClass.getClassLoader(), bean.getClass().getInterfaces(), (proxy, method, args) -> {
             boolean isAnnotated = annotatedMethods.stream().anyMatch(pojoMethod -> methodEquals(pojoMethod, method));
             if (isAnnotated) {
