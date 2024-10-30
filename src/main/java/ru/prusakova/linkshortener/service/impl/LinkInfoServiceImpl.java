@@ -13,6 +13,7 @@ import ru.prusakova.linkshortener.property.LinkInfoProperty;
 import ru.prusakova.linkshortener.repository.LinkInfoRepository;
 import ru.prusakova.linkshortener.service.LinkInfoService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,6 +45,7 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     @LogExecutionTime
     public LinkInfoResponse getByShortLink(String shortLink) {
         return linkInfoRepository.findByShortLink(shortLink)
+                .filter(it -> it.getActive() && it.getEndTime().isAfter(LocalDateTime.now()))
                 .map(this::toResponse)
                 .orElseThrow(() -> new NotFoundException("Не найдена сущность по короткой ссылке " + shortLink));
     }
