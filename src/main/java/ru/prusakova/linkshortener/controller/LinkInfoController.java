@@ -62,7 +62,7 @@ public class LinkInfoController {
                 .build();
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{id}")
     public void deleteLinkInfo(@PathVariable UUID id) {
         log.info("Поступил запрос на удаление информации о ссылке: id={}", id);
 
