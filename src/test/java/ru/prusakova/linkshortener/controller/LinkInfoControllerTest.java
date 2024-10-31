@@ -53,7 +53,6 @@ class LinkInfoControllerTest {
     void deleteLinkInfoTest() {
         LinkInfoService linkInfoService = mock(LinkInfoService.class);
         LinkInfoController controller = new LinkInfoController(linkInfoService);
-
-        Assertions.assertNotNull(controller.deleteLinkInfo(UUID.fromString("4325e591-02e2-45b4-8e0c-325539c4cc34")));
+        controller.deleteLinkInfo(UUID.fromString("4325e591-02e2-45b4-8e0c-325539c4cc34"));
     }
 }

@@ -44,8 +44,7 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     @Override
     @LogExecutionTime
     public LinkInfoResponse getByShortLink(String shortLink) {
-        return linkInfoRepository.findByShortLink(shortLink)
-                .filter(it -> it.getActive() && it.getEndTime().isAfter(LocalDateTime.now()))
+        return linkInfoRepository.findByShortLinkAndActiveAndEndTimeAfter(shortLink)
                 .map(this::toResponse)
                 .orElseThrow(() -> new NotFoundException("Не найдена сущность по короткой ссылке " + shortLink));
     }

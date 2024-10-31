@@ -31,6 +31,7 @@ public class LinkInfoController {
         log.info("Информация успешно получена: {}", linkInfoResponses);
 
         return CommonResponse.<List<LinkInfoResponse>>builder()
+                .id(UUID.randomUUID())
                 .body(linkInfoResponses)
                 .build();
     };
@@ -48,7 +49,7 @@ public class LinkInfoController {
                 .build();
     };
 
-    @PutMapping
+    @PatchMapping
     public CommonResponse<LinkInfoResponse> putLinkInfo(@RequestBody CommonRequest<UpdateLinkInfoRequest> request) {
         log.info("Поступил запрос на изменение информации о ссылке: {}", request);
 
@@ -62,13 +63,11 @@ public class LinkInfoController {
     }
 
     @DeleteMapping()
-    public ResponseEntity<?> deleteLinkInfo(@RequestParam(value="id") UUID id) {
+    public void deleteLinkInfo(@PathVariable UUID id) {
         log.info("Поступил запрос на удаление информации о ссылке: id={}", id);
 
         linkInfoService.delete(id);
 
         log.info("Информация о ссылке успешно удалена: id={}", id);
-
-        return ResponseEntity.ok("ok");
     }
 }
