@@ -45,6 +45,7 @@ public class LinkInfoController {
         log.info("Короткая ссылка создана успешно: {}", linkInfoResponse);
 
         return CommonResponse.<LinkInfoResponse>builder()
+                .id(UUID.randomUUID())
                 .body(linkInfoResponse)
                 .build();
     };
@@ -58,16 +59,20 @@ public class LinkInfoController {
         log.info("Информация о ссылке успешно изменена: {}", linkInfoResponse);
 
         return CommonResponse.<LinkInfoResponse>builder()
+                .id(UUID.randomUUID())
                 .body(linkInfoResponse)
                 .build();
     }
 
     @DeleteMapping("/{id}")
-    public void deleteLinkInfo(@PathVariable UUID id) {
+    public CommonResponse<?> deleteLinkInfo(@PathVariable UUID id) {
         log.info("Поступил запрос на удаление информации о ссылке: id={}", id);
 
         linkInfoService.delete(id);
 
         log.info("Информация о ссылке успешно удалена: id={}", id);
+        return CommonResponse.builder()
+                .id(UUID.randomUUID())
+                .build();
     }
 }
