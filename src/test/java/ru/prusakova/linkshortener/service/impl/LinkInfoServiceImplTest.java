@@ -35,7 +35,7 @@ class LinkInfoServiceImplTest {
     void getByShortLinkTest() {
         CreateLinkInfoRequest rq = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/1",
-                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
                 "doc1",
                 true
         );
@@ -68,13 +68,13 @@ class LinkInfoServiceImplTest {
     void deleteTest() {
         CreateLinkInfoRequest rq1 = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/1",
-                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
                 "doc1",
                 true
         );
         CreateLinkInfoRequest rq2 = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/2",
-                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
                 "doc2",
                 true
         );

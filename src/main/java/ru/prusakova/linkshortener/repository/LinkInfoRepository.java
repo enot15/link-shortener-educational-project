@@ -10,6 +10,8 @@ public interface LinkInfoRepository {
 
     Optional<LinkInfo> findByShortLink(String shortLink);
 
+    Optional<LinkInfo> findByShortLinkAndActiveAndEndTimeAfter(String shortLink);
+
     Optional<LinkInfo> findById(UUID id);
 
     LinkInfo save(LinkInfo linkInfo);
