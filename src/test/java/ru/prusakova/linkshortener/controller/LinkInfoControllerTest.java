@@ -2,7 +2,6 @@ package ru.prusakova.linkshortener.controller;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import ru.prusakova.linkshortener.dto.CreateLinkInfoRequest;
 import ru.prusakova.linkshortener.dto.UpdateLinkInfoRequest;
 import ru.prusakova.linkshortener.dto.common.CommonRequest;
@@ -13,8 +12,41 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.mock;
 
-@SpringBootTest
+//@WebMvcTest(LinkInfoController.class)
 class LinkInfoControllerTest {
+
+//    @Autowired
+//    MockMvc mvc;
+
+//    @MockBean
+//    LinkInfoService linkInfoService;
+
+//    @Test
+//    void getLinkInfosTest() throws Exception {
+//        Mockito.when(this.linkInfoService.findByFilter()).thenReturn(getLinkInfoResponses());
+//
+//        mvc.perform(get("/api/v1/link-infos"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.length()").value(2));
+//    }
+//
+//    private List<LinkInfoResponse> getLinkInfoResponses() {
+//        LinkInfoResponse linkInfoResponse1 = new LinkInfoResponse(UUID.randomUUID(),
+//                "https://github.com",
+//                "GtCGabA",
+//                LocalDateTime.now().plusDays(1),
+//                "description1",
+//                true,
+//                0L);
+//        LinkInfoResponse linkInfoResponse2 = new LinkInfoResponse(UUID.randomUUID(),
+//                "https://google.com",
+//                "GtCGabA",
+//                LocalDateTime.now().plusDays(2),
+//                "description2",
+//                true,
+//                0L);
+//        return List.of(linkInfoResponse1, linkInfoResponse2);
+//    }
 
     @Test
     void getLinkInfosTest() {

@@ -1,6 +1,5 @@
 package ru.prusakova.linkshortener.validation;
 
-import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ public class ValidUUIDValidator implements ConstraintValidator<ValidUUID, String
     @Override
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
         if (!StringUtils.hasText(value)) {
-            return false;
+            return true;
         }
 
         return value.matches(UUID_PATTERN);
