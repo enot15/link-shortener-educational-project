@@ -25,7 +25,6 @@ public class CreateLinkInfoRequest {
     /**
      * Время истеченияя жизни короткой ссылки
      */
-    @NotNull(message = "Дата окончания действия короткой ссылки не должна быть пустой или null")
     @ValidLocalDateTime(message = "Дата окончания действия короткой ссылки должна соответствовать паттерну; не может быть прошедшей")
     private String endTime;
 
