@@ -8,6 +8,7 @@ import ru.prusakova.linkshortener.dto.CreateLinkInfoRequest;
 import ru.prusakova.linkshortener.dto.LinkInfoResponse;
 import ru.prusakova.linkshortener.dto.UpdateLinkInfoRequest;
 import ru.prusakova.linkshortener.exception.NotFoundException;
+import ru.prusakova.linkshortener.mapper.LinkInfoMapper;
 import ru.prusakova.linkshortener.model.LinkInfo;
 import ru.prusakova.linkshortener.property.LinkInfoProperty;
 import ru.prusakova.linkshortener.repository.LinkInfoRepository;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LinkInfoServiceImpl implements LinkInfoService {
 
+    private final LinkInfoMapper linkInfoMapper;
     private final LinkInfoRepository linkInfoRepository;
     private final LinkInfoProperty linkInfoProperty;
 
@@ -29,23 +31,16 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     @LogExecutionTime
     public LinkInfoResponse createLinkInfo(CreateLinkInfoRequest request) {
         String shortLink = RandomStringUtils.randomAlphabetic(linkInfoProperty.getShortLinkLength());
-        LinkInfo linkInfo = LinkInfo.builder()
-                .link(request.getLink())
-                .shortLink(shortLink)
-                .description(request.getDescription())
-                .endTime(request.getEndTime())
-                .active(request.getActive())
-                .openingCount(0L)
-                .build();
+        LinkInfo linkInfo = linkInfoMapper.fromCreateRequest(request, shortLink);
         LinkInfo saveLinkInfo = linkInfoRepository.save(linkInfo);
-        return toResponse(saveLinkInfo);
+        return linkInfoMapper.toResponse(saveLinkInfo);
     }
 
     @Override
     @LogExecutionTime
     public LinkInfoResponse getByShortLink(String shortLink) {
         return linkInfoRepository.findByShortLinkAndActiveAndEndTimeAfter(shortLink)
-                .map(this::toResponse)
+                .map(linkInfoMapper::toResponse)
                 .orElseThrow(() -> new NotFoundException("Не найдена сущность по короткой ссылке " + shortLink));
     }
 
@@ -53,7 +48,7 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     @LogExecutionTime
     public List<LinkInfoResponse> findByFilter() {
         return linkInfoRepository.findAll().stream()
-                .map(this::toResponse)
+                .map(linkInfoMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -66,14 +61,14 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     @Override
     @LogExecutionTime
     public LinkInfoResponse updateLinkInfo(UpdateLinkInfoRequest request) {
-        LinkInfo linkInfo = linkInfoRepository.findById(request.getId())
+        LinkInfo linkInfo = linkInfoRepository.findById(UUID.fromString(request.getId()))
                 .orElseThrow(() -> new NotFoundException("Не найдена сущность по id " + request.getId()));
 
         if (request.getLink() != null) {
             linkInfo.setLink(request.getLink());
         }
         if (request.getEndTime() != null) {
-            linkInfo.setEndTime(request.getEndTime());
+            linkInfo.setEndTime(LocalDateTime.parse(request.getEndTime()));
         }
         if (request.getDescription() != null) {
             linkInfo.setDescription(request.getDescription());
@@ -83,18 +78,6 @@ public class LinkInfoServiceImpl implements LinkInfoService {
         }
 
         linkInfoRepository.save(linkInfo);
-        return toResponse(linkInfo);
-    }
-
-    private LinkInfoResponse toResponse(LinkInfo linkInfo) {
-        return LinkInfoResponse.builder()
-                .id(linkInfo.getId())
-                .link(linkInfo.getLink())
-                .shortLink(linkInfo.getShortLink())
-                .endTime(linkInfo.getEndTime())
-                .description(linkInfo.getDescription())
-                .active(linkInfo.getActive())
-                .openingCount(linkInfo.getOpeningCount())
-                .build();
+        return linkInfoMapper.toResponse(linkInfo);
     }
 }

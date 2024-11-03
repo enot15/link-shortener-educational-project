@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.prusakova.linkshortener.dto.LinkInfoResponse;
-import ru.prusakova.linkshortener.repository.LinkInfoRepository;
 import ru.prusakova.linkshortener.service.LinkInfoService;
 
 @Slf4j
@@ -23,8 +22,6 @@ public class ShortLinkController {
 
     @GetMapping("/{shortLink}")
     public ResponseEntity<String> getByShortLink(@PathVariable String shortLink) {
-        log.info("Поступил запрос на открытие короткой ссылки: {}", shortLink);
-
         LinkInfoResponse linkInfoResponse = linkInfoService.getByShortLink(shortLink);
 
         return ResponseEntity

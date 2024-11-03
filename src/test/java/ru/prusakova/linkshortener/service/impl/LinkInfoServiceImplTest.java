@@ -22,7 +22,7 @@ class LinkInfoServiceImplTest {
     void createLinkInfoTest() {
         CreateLinkInfoRequest rq = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/1",
-                LocalDateTime.now(),
+                String.valueOf(LocalDateTime.now()),
                 "description",
                 true
         );
@@ -35,7 +35,7 @@ class LinkInfoServiceImplTest {
     void getByShortLinkTest() {
         CreateLinkInfoRequest rq = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/1",
-                LocalDateTime.now().plusDays(1),
+                String.valueOf(LocalDateTime.now().plusDays(1)),
                 "doc1",
                 true
         );
@@ -48,13 +48,13 @@ class LinkInfoServiceImplTest {
     void findByFilterTest() {
         CreateLinkInfoRequest rq1 = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/1",
-                LocalDateTime.now(),
+                String.valueOf(LocalDateTime.now()),
                 "doc1",
                 true
         );
         CreateLinkInfoRequest rq2 = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/2",
-                LocalDateTime.now(),
+                String.valueOf(LocalDateTime.now()),
                 "doc2",
                 true
         );
@@ -68,13 +68,13 @@ class LinkInfoServiceImplTest {
     void deleteTest() {
         CreateLinkInfoRequest rq1 = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/1",
-                LocalDateTime.now().plusDays(1),
+                String.valueOf(LocalDateTime.now().plusDays(1)),
                 "doc1",
                 true
         );
         CreateLinkInfoRequest rq2 = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/2",
-                LocalDateTime.now().plusDays(1),
+                String.valueOf(LocalDateTime.now().plusDays(1)),
                 "doc2",
                 true
         );
@@ -91,13 +91,13 @@ class LinkInfoServiceImplTest {
     void updateLinkInfoTest() {
         CreateLinkInfoRequest rq = new CreateLinkInfoRequest(
                 "https://docs.google.com/document/d/1",
-                LocalDateTime.now(),
+                String.valueOf(LocalDateTime.now()),
                 "doc1",
                 true
         );
         LinkInfoResponse linkInfoResponse = linkInfoService.createLinkInfo(rq);
         UpdateLinkInfoRequest updateLinkInfoRequest1 = new UpdateLinkInfoRequest();
-        updateLinkInfoRequest1.setId(linkInfoResponse.getId());
+        updateLinkInfoRequest1.setId(String.valueOf(linkInfoResponse.getId()));
         updateLinkInfoRequest1.setDescription("doc11");
 
         LinkInfoResponse linkInfoResponseNew1 = LinkInfoResponse.builder()
