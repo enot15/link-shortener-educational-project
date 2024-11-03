@@ -1,5 +1,6 @@
 package ru.prusakova.linkshortener.dto;
 
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -7,7 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.prusakova.linkshortener.validation.ValidLocalDateTime;
+
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -25,8 +27,8 @@ public class CreateLinkInfoRequest {
     /**
      * Время истеченияя жизни короткой ссылки
      */
-    @ValidLocalDateTime(message = "Дата окончания действия короткой ссылки должна соответствовать паттерну; не может быть прошедшей")
-    private String endTime;
+    @Future(message = "Дата окончания действия короткой ссылки не может быть прошедшей")
+    private LocalDateTime endTime;
 
     /**
      * Описание
