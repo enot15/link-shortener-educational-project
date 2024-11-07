@@ -3,6 +3,7 @@ package ru.prusakova.linkshortener.controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.prusakova.linkshortener.dto.CreateLinkInfoRequest;
+import ru.prusakova.linkshortener.dto.FilterLinkInfoRequest;
 import ru.prusakova.linkshortener.dto.UpdateLinkInfoRequest;
 import ru.prusakova.linkshortener.dto.common.CommonRequest;
 import ru.prusakova.linkshortener.service.LinkInfoService;
@@ -53,12 +54,15 @@ class LinkInfoControllerTest {
         LinkInfoService linkInfoService = mock(LinkInfoService.class);
         LinkInfoController controller = new LinkInfoController(linkInfoService);
 
-        Assertions.assertNotNull(controller.getLinkInfos());
+        FilterLinkInfoRequest filterLinkInfoRequest = new FilterLinkInfoRequest();
+        filterLinkInfoRequest.setLinkPart("go");
+
+        Assertions.assertNotNull(controller.getLinkInfos(new CommonRequest<>(filterLinkInfoRequest)));
 
         controller.postCreateLinkInfo(new CommonRequest<>(new CreateLinkInfoRequest(
-                "https://github.com", String.valueOf(LocalDateTime.now()), "description", true)));
+                "https://github.com", LocalDateTime.now(), "description", true)));
 
-        Assertions.assertNotNull(controller.getLinkInfos());
+        Assertions.assertNotNull(controller.getLinkInfos(new CommonRequest<>(filterLinkInfoRequest)));
     }
 
     @Test
@@ -67,7 +71,7 @@ class LinkInfoControllerTest {
         LinkInfoController controller = new LinkInfoController(linkInfoService);
 
         Assertions.assertNotNull(controller.postCreateLinkInfo(new CommonRequest<>(new CreateLinkInfoRequest(
-                "https://github.com", String.valueOf(LocalDateTime.now()), "description", true))));
+                "https://github.com", LocalDateTime.now(), "description", true))));
     }
 
     @Test
