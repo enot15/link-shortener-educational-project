@@ -42,6 +42,7 @@ public class LinkShortenerExceptionHandler {
         log.warn("Ошибка валидации: {}", validationErrors, e);
 
         return CommonResponse.builder()
+                .id(UUID.randomUUID())
                 .errorMessage("Ошибка валидации")
                 .validationErrors(validationErrors)
                 .build();
@@ -59,6 +60,7 @@ public class LinkShortenerExceptionHandler {
             log.error(errorMessage, e);
 
             return CommonResponse.builder()
+                    .id(UUID.randomUUID())
                     .errorMessage(errorMessage)
                     .build();
         }

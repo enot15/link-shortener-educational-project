@@ -18,7 +18,7 @@ public class AuditableEntity {
     private LocalDateTime createTime;
     private String createUser;
     private LocalDateTime lastUpdateTime;
-    private String lastUpdate_user;
+    private String lastUpdateUser;
     
     @PrePersist
     public void prePersist() {
@@ -26,13 +26,13 @@ public class AuditableEntity {
         this.createTime = now;
         this.lastUpdateTime = now;
         this.createUser = DEFAULT_DB_USER;
-        this.lastUpdate_user =  DEFAULT_DB_USER;
+        this.lastUpdateUser =  DEFAULT_DB_USER;
 
     }
 
     @PreUpdate
     public void preUpdate() {
         this.lastUpdateTime = LocalDateTime.now();
-        this.lastUpdate_user =  DEFAULT_DB_USER;
+        this.lastUpdateUser =  DEFAULT_DB_USER;
     }
 }
