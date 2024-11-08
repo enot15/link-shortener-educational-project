@@ -1,6 +1,8 @@
 package ru.prusakova.linkshortener.repository;
 
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -40,9 +42,10 @@ public interface LinkInfoRepository extends JpaRepository<LinkInfo, UUID> {
           AND (:active IS NULL OR active = :active)
         """,
         nativeQuery = true)
-    List<LinkInfo> findByFilter(String linkPart,
+    Page<LinkInfo> findByFilter(String linkPart,
                                 LocalDateTime endTimeFrom,
                                 LocalDateTime endTimeTo,
                                 String descriptionPart,
-                                Boolean active);
+                                Boolean active,
+                                Pageable pageable);
 }
