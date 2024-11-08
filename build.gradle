@@ -8,11 +8,14 @@ group = 'ru.prusakova'
 version = '1.0-SNAPSHOT'
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven {
         url = uri("https://raw.githubusercontent.com/enot15/logging-starter/master/maven-repo")
     }
 }
+
+def loggingStarterVersion = '1.1-SNAPSHOT'
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
@@ -30,7 +33,7 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.0'
 
-    implementation 'ru.prusakova:logging-starter:1.0-SNAPSHOT'
+    implementation "ru.prusakova:logging-starter:${loggingStarterVersion}"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
