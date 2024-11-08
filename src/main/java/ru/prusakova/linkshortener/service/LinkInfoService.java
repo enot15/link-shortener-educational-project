@@ -1,6 +1,7 @@
 package ru.prusakova.linkshortener.service;
 
 import ru.prusakova.linkshortener.dto.CreateLinkInfoRequest;
+import ru.prusakova.linkshortener.dto.FilterLinkInfoRequest;
 import ru.prusakova.linkshortener.dto.LinkInfoResponse;
 import ru.prusakova.linkshortener.dto.UpdateLinkInfoRequest;
 
@@ -13,7 +14,7 @@ public interface LinkInfoService {
 
     LinkInfoResponse getByShortLink(String shortLink);
 
-    List<LinkInfoResponse> findByFilter();
+    List<LinkInfoResponse> findByFilter(FilterLinkInfoRequest filterRequest);
 
     void delete(UUID id);
 
