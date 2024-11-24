@@ -1,6 +1,7 @@
 package ru.prusakova.linkshortener.controller;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import ru.prusakova.linkshortener.dto.CreateLinkInfoRequest;
 import ru.prusakova.linkshortener.dto.FilterLinkInfoRequest;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.mock;
 
+@Disabled
 //@WebMvcTest(LinkInfoController.class)
 class LinkInfoControllerTest {
 

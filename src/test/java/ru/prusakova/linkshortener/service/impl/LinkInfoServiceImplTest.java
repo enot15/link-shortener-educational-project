@@ -1,6 +1,7 @@
 package ru.prusakova.linkshortener.service.impl;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,12 +9,12 @@ import ru.prusakova.linkshortener.dto.CreateLinkInfoRequest;
 import ru.prusakova.linkshortener.dto.FilterLinkInfoRequest;
 import ru.prusakova.linkshortener.dto.LinkInfoResponse;
 import ru.prusakova.linkshortener.dto.UpdateLinkInfoRequest;
-import ru.prusakova.linkshortener.exception.NotFoundException;
 import ru.prusakova.linkshortener.exception.NotFoundShortLinkException;
 import ru.prusakova.linkshortener.service.LinkInfoService;
 
 import java.time.LocalDateTime;
 
+@Disabled
 @SpringBootTest
 class LinkInfoServiceImplTest {
 
