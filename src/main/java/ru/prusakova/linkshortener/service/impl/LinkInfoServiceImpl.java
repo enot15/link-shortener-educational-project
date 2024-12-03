@@ -104,6 +104,14 @@ public class LinkInfoServiceImpl implements LinkInfoService {
         return linkInfoMapper.toResponse(linkInfo);
     }
 
+    @Override
+    public void deleteOldAndNoActiveEntity() {
+        List<LinkInfo> linkInfos = linkInfoRepository.findAll();
+        linkInfos.stream()
+                .filter(it -> !it.getActive() && it.getLastUpdateTime().isBefore(LocalDateTime.now().minusMonths(1)))
+                .forEach(it -> linkInfoRepository.deleteById(it.getId()));
+    }
+
     private Pageable mapPageable(PageableRequest page) {
         List<Sort.Order> sorts = page.getSorts().stream()
                 .map(sort -> new Sort.Order(
