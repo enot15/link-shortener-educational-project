@@ -20,6 +20,6 @@ public interface LinkInfoService {
 
     LinkInfoResponse updateLinkInfo(UpdateLinkInfoRequest request);
 
-    void deleteOldAndNoActiveEntity();
+    void deleteOldAndNoActiveLinkInfos();
 
 }

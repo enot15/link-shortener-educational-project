@@ -16,6 +16,4 @@ public class LinkInfoProperty {
 
     @Min(value = 7, message = "Длина короткой ссылки не может быть меньше 7")
     private Integer shortLinkLength;
-
-    private String scheduledDailyCron;
 }

@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import ru.prusakova.linkshortener.model.LinkInfo;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,4 +47,7 @@ public interface LinkInfoRepository extends JpaRepository<LinkInfo, UUID> {
                                 String descriptionPart,
                                 Boolean active,
                                 Pageable pageable);
+
+    @Transactional
+    void deleteByActiveIsFalseAndLastUpdateTimeBefore(LocalDateTime localDateTimeNow);
 }

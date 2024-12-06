@@ -105,11 +105,9 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     }
 
     @Override
-    public void deleteOldAndNoActiveEntity() {
-        List<LinkInfo> linkInfos = linkInfoRepository.findAll();
-        linkInfos.stream()
-                .filter(it -> !it.getActive() && it.getLastUpdateTime().isBefore(LocalDateTime.now().minusMonths(1)))
-                .forEach(it -> linkInfoRepository.deleteById(it.getId()));
+    @LogExecutionTime
+    public void deleteOldAndNoActiveLinkInfos() {
+        linkInfoRepository.deleteByActiveIsFalseAndLastUpdateTimeBefore(LocalDateTime.now());
     }
 
     private Pageable mapPageable(PageableRequest page) {

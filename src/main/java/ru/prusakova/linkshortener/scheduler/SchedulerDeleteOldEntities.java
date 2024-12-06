@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.prusakova.linkshortener.property.LinkInfoProperty;
 import ru.prusakova.linkshortener.service.LinkInfoService;
 
 @Slf4j
@@ -14,12 +13,12 @@ import ru.prusakova.linkshortener.service.LinkInfoService;
 public class SchedulerDeleteOldEntities {
 
     private final LinkInfoService linkInfoService;
-    private final LinkInfoProperty linkInfoProperty;
 
-    @Async("singleExecutor")
-    @Scheduled(cron = "#{@linkInfoProperty.scheduledDailyCron}")
-    public void deleteOldEntities() {
-        linkInfoService.deleteOldAndNoActiveEntity();
-        log.info("Старые записи удалены");
+    @Async("deleteOldLinkInfosExecutor")
+    @Scheduled(cron = "${link-shortener.delete-old-link-infos-cron}")
+    public void deleteOldLinkInfos() {
+        log.info("Старт удаления старых и не активных записей");
+        linkInfoService.deleteOldAndNoActiveLinkInfos();
+        log.info("Старые и неактивные записи удалены");
     }
 }
