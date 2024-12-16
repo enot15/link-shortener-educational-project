@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: "03.create_link_info_description_index.yml"
+      author: "Prusakova AA"
+      runInTransaction:  false
+      changes:
+        - sql:
+            sql: CREATE INDEX CONCURRENTLY link_info_description_gin_idx ON link_info USING gin (description gin_trgm_ops);

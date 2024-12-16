@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: "02.create_pg_trgm_extension.yml"
+      author: "Prusakova AA"
+      runInTransaction:  false
+      changes:
+        - sql:
+            sql: CREATE EXTENSION IF NOT EXISTS pg_trgm;
