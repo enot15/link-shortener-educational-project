@@ -8,3 +8,15 @@ databaseChangeLog:
   - include:
       file: 01.create_link_info.yml
       relativeToChangelogFile: true
+  - include:
+      file: 02.create_pg_trgm_extension.yml
+      relativeToChangelogFile: true
+  - include:
+      file: 03.create_link_info_link_index.yml
+      relativeToChangelogFile: true
+  - include:
+      file: 04.create_link_info_end_time_index.yml
+      relativeToChangelogFile: true
+  - include:
+      file: 05.create_link_info_description_index.yml
+      relativeToChangelogFile: true
