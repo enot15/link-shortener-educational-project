@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: "03.create_link_info_description_index.yml"
+      id: "05.create_link_info_description_index.yml"
       author: "Prusakova AA"
       runInTransaction:  false
       changes:
