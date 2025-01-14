@@ -5,4 +5,4 @@ databaseChangeLog:
       runInTransaction:  false
       changes:
         - sql:
-            sql: CREATE INDEX CONCURRENTLY link_info_link_gin_idx ON link_info USING gin (link gin_trgm_ops);
+            sql: CREATE INDEX CONCURRENTLY IF NOT EXISTS link_info_link_gin_idx ON link_info USING gin (link gin_trgm_ops);

@@ -27,6 +27,9 @@ dependencies {
     implementation "org.liquibase:liquibase-core"
     implementation "org.postgresql:postgresql:42.7.4"
 
+    implementation "net.javacrumbs.shedlock:shedlock-spring:5.15.0"
+    implementation "net.javacrumbs.shedlock:shedlock-provider-jdbc-template:5.15.0"
+
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 

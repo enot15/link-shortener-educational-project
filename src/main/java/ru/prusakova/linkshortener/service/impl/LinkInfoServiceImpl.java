@@ -1,6 +1,8 @@
 package ru.prusakova.linkshortener.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LinkInfoServiceImpl implements LinkInfoService {
@@ -106,6 +109,7 @@ public class LinkInfoServiceImpl implements LinkInfoService {
 
     @Override
     @LogExecutionTime
+    @SchedulerLock(name = "deleteOldAndNoActiveLinkInfos", lockAtLeastFor = "15s", lockAtMostFor = "2m")
     public void deleteOldAndNoActiveLinkInfos() {
         linkInfoRepository.deleteByActiveIsFalseAndLastUpdateTimeBefore(LocalDateTime.now());
     }
