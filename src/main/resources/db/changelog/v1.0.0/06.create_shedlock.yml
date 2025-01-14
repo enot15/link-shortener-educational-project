@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: "06.create_shedlock.yml"
+      author: "Prusakova AA"
+      changes:
+        - createTable:
+            ifNotExists: true
+            tableName: shedlock
+            columns:
+              - column:
+                  name: name
+                  type: varchar(64)
+                  remarks: "Имя замка"
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: lock_until
+                  type: timestamp
+                  remarks: "Время, до которого наложен замок"
+              - column:
+                  name: locked_at
+                  type: timestamp
+                  remarks: "Время наложения замка"
+              - column:
+                  name: locked_by
+                  type: varchar(255)
+                  remarks: "Сервис, который наложил замок"

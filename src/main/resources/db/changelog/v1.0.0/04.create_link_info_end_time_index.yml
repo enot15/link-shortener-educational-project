@@ -5,4 +5,4 @@ databaseChangeLog:
       runInTransaction:  false
       changes:
         - sql:
-            sql: CREATE INDEX CONCURRENTLY link_info_end_time_idx ON link_info (end_time);
+            sql: CREATE INDEX CONCURRENTLY IF NOT EXISTS link_info_end_time_idx ON link_info (end_time);
