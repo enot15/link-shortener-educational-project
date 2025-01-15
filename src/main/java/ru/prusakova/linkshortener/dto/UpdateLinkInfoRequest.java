@@ -3,12 +3,16 @@ package ru.prusakova.linkshortener.dto;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.prusakova.linkshortener.validation.ValidUUID;
 
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UpdateLinkInfoRequest {
 
     @NotEmpty(message = "Идентификатор не может отсутствовать или быть null")
