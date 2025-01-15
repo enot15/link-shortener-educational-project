@@ -1,32 +1,39 @@
 package ru.prusakova.linkshortener.controller;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
-import ru.prusakova.linkshortener.dto.LinkInfoResponse;
-import ru.prusakova.linkshortener.service.LinkInfoService;
+import org.mockito.Mockito;
+import org.springframework.http.HttpHeaders;
+import ru.prusakova.linkshortener.AbstractTest;
+import ru.prusakova.linkshortener.model.LinkInfo;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Disabled
-class ShortLinkControllerTest {
+class ShortLinkControllerTest extends AbstractTest {
 
     @Test
-    void getByShortLinkTest() {
-        LinkInfoService linkInfoService = mock(LinkInfoService.class);
-        ShortLinkController shortLinkController = new ShortLinkController(linkInfoService);
+    @Transactional
+    void when_shortLink_expect_success() throws Exception {
+        String shortLink = "dHteSKM";
+        String link = "https://github.com";
 
-        LinkInfoResponse linkInfoResponse = new LinkInfoResponse(UUID.fromString("4325e591-02e2-45b4-8e0c-325539c4cc34"),
-                "https://github.com", "dHteSKM", LocalDateTime.now(), "test", true, 0L);
+        LinkInfo linkInfo = new LinkInfo();
+        linkInfo.setLink(link);
+        linkInfo.setShortLink(shortLink);
+        linkInfo.setActive(true);
 
-        when(linkInfoService.getByShortLink(any())).thenReturn(linkInfoResponse);
+        linkInfoRepository.save(linkInfo);
 
-        Assertions.assertNotNull(shortLinkController.getByShortLink("dHteSKM"));
+        mockMvc.perform(get("/api/v1/short-link/" + shortLink))
+                .andExpect(status().isTemporaryRedirect())
+                .andExpect(header().string(HttpHeaders.LOCATION, link));
+
+        Mockito.verify(linkInfoRepository).findActiveShortLink(eq(shortLink), any(LocalDateTime.class));
     }
 }
